@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.antiphone"
+    namespace = "com.RIDdev.antiphone"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.antiphone"
+        applicationId = "com.RIDdev.antiphone"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

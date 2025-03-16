@@ -1,4 +1,4 @@
-package com.example.antiphone
+package com.RIDdev.antiphone
 
 import org.junit.Test
 
