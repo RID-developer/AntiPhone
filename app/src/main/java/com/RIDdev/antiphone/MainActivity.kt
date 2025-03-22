@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.RIDdev.antiphone.Database.DBOperation
+import com.RIDdev.antiphone.background.Constant
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,8 +20,8 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        var operation = DBOperation(applicationContext);
-       operation.Remake();
+        startService(Intent(this, Constant::class.java))
+
     }
     fun Opt(V: View)
     {

@@ -1,2 +1,2 @@
 # AntiPhone
-Anti phone addiction app
+Lightweight Tracker, and app blocker

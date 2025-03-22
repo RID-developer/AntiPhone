@@ -24,6 +24,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name="com.RIDdev.antiphone.background.Constant" />
+        <service
+            android:name="com.RIDdev.antiphone.background.AppNow"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/appnow" />
+        </service>
     </application>
 
 </manifest>
