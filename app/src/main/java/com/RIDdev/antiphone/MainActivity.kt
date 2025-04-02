@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         startService(Intent(this, Constant::class.java))
+        val intent = Intent("android.settings.ACCESSIBILITY_SETTINGS")
+        startActivity(intent)
 
     }
     fun Opt(V: View)

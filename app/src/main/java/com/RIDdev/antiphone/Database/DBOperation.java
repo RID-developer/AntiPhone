@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.*;
 import android.content.Context;
 
+import com.RIDdev.antiphone.PackSet;
 import com.RIDdev.antiphone.background.Constant;
 
 import java.lang.reflect.Field;
@@ -95,14 +96,17 @@ public class DBOperation extends SQLiteOpenHelper {
     {
         Cursor cursor;
         String query;
-
+        PackSet pack = new PackSet();
+        pack.Reset();
         for (int i = 0; i < names.length; ++i) {
-            query = "SELECT " + names[i] + " FROM Package WHERE PackName = '" + Constant.Pack.PackName + "'";
-            cursor = db.rawQuery(query, null);
+            query = "SELECT " + names[i] + " FROM Package WHERE PackName = ?";
+            cursor =  db.rawQuery(query, new String[]{Constant.Pack.PackName});
 
             if (cursor.moveToFirst()) {
                 try {
-                    if (types[i] == String.class) {
+                    if(cursor.isNull(0))
+                    fields[i].set(Constant.Pack,fields[i].get(pack));
+                    else if (types[i] == String.class) {
                         fields[i].set(Constant.Pack, cursor.getString(0));
                     } else if (types[i] == int.class || types[i] == Integer.class) {
                         fields[i].set(Constant.Pack, cursor.getInt(0));
@@ -113,9 +117,13 @@ public class DBOperation extends SQLiteOpenHelper {
                     System.out.println("AAAAAAAAAAAAA" + e);
                     Remake();
                 }
+                finally {
+                    cursor.close();
+                }
+                }
             }
-            cursor.close();
+
         }
     }
-}
+
 

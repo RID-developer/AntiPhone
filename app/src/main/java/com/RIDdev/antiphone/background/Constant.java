@@ -3,6 +3,8 @@ package com.RIDdev.antiphone.background;
 import static java.security.AccessController.getContext;
 
 import android.app.Service;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
@@ -11,6 +13,8 @@ import androidx.annotation.Nullable;
 
 import com.RIDdev.antiphone.Database.DBOperation;
 import com.RIDdev.antiphone.PackSet;
+
+import java.util.List;
 
 public class Constant extends Service {
     public static DBOperation Opr;
@@ -34,9 +38,7 @@ public void Initiate() {
         Opr = new DBOperation(getApplicationContext());
         Opr.fill();
         Opr.Remake();
-        Pack.PackName = "com.kde.konsole";
-        Pack.ad = false;
-        Opr.Insert();
+
         Initiate();
         return START_STICKY;
     }
@@ -64,5 +66,24 @@ public void Initiate() {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
+        }
+        public String Check()
+        {
+            UsageStatsManager usm = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
+            long time = System.currentTimeMillis();
+            List<UsageStats> stats = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000 * 60 * 5, time);
+            UsageStats target = null;
+            time = Long.MIN_VALUE;
+            for (UsageStats usageStats : stats) {
+                if (usageStats.getLastTimeUsed() > time) {
+                    time = usageStats.getLastTimeUsed();
+                    target = usageStats;
+                }
+            }
+            if (target != null) {
+                return target.getPackageName();
+            }
+            else
+                return null;
         }
 }
