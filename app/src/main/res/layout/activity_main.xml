@@ -25,13 +25,6 @@
             android:textSize="24sp"
             android:textColor="#0D47A1" />
 
-        <View
-            android:id="@+id/usageTotal"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            android:background="#0D47A1" />
-
         <TextView
             android:id="@+id/tvTotalUsage"
             android:layout_width="wrap_content"
@@ -42,63 +35,26 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp" />
 
-        <View
-            android:id="@+id/usageBlocked"
+        <ProgressBar
+            android:id="@+id/progressTotal"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            android:background="#1565C0" />
-
-        <TextView
-            android:id="@+id/tvBlockedUsage"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Blocked Apps Usage: 1h 30m"
-            android:textColor="#0D47A1"
-            android:textSize="18sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp" />
-
-        <View
-            android:id="@+id/usageNonBlocked"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:background="#1E88E5" />
-
-        <TextView
-            android:id="@+id/tvNonBlockedUsage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Non-Blocked Apps Usage: 1h"
-            android:textColor="#0D47A1"
-            android:textSize="18sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp" />
+            android:max="1440"
+            android:progress="0" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/Options"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
-        android:backgroundTint="#1565C0"
-        android:onClick="Opt"
-        android:text="Options"
-        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/AppBlock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="App Block"
-        android:backgroundTint="#1565C0"
-        android:textColor="#FFFFFF"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"/>
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="#1565C0"
+        android:onClick="Appblock"
+        android:text="App ''Block''"
+        android:textColor="#FFFFFF" />
 
 </RelativeLayout>

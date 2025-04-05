@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.*;
 import android.content.Context;
+import android.util.Log;
 
 import com.RIDdev.antiphone.PackSet;
 import com.RIDdev.antiphone.background.Constant;
@@ -70,13 +71,12 @@ public class DBOperation extends SQLiteOpenHelper {
         cursor.close();
         return OldAtr;
     }
-    public void Insert() {
+    public void Insert(PackSet pack) {
         try {
-            Field[] fields = com.RIDdev.antiphone.PackSet.class.getDeclaredFields();
             ContentValues values = new ContentValues();
             Object x;
             for (int i = 0; i < types.length; ++i) {
-                x = fields[i].get(Constant.Pack);
+                x = fields[i].get(pack);
                 if (x != null) {
                     if (types[i] == String.class)
                         values.put(names[i], (String) x);
@@ -87,43 +87,49 @@ public class DBOperation extends SQLiteOpenHelper {
                 }
             }
 
-            db.insert("Package", null, values);
-        }catch(Exception e)
-        {System.out.println("AAAAAAAAAAAAA WHYYYYYY"+e);
-        Remake();}
+            db.insertWithOnConflict("Package", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+
+        } catch(Exception e) {
+            System.out.println("AAAAAAAAAAAAA WHYYYYYY" + e);
+            Remake();
+        }
     }
-    public void Retrieve()
-    {
+
+    public void Retrieve(PackSet pack) {
         Cursor cursor;
         String query;
-        PackSet pack = new PackSet();
-        pack.Reset();
+        PackSet Pack = new PackSet();
+        Pack.Reset();
         for (int i = 0; i < names.length; ++i) {
-            query = "SELECT " + names[i] + " FROM Package WHERE PackName = ?";
-            cursor =  db.rawQuery(query, new String[]{Constant.Pack.PackName});
+            if (!names[i].equals("PackName")) {
+                query = "SELECT " + names[i] + " FROM Package WHERE PackName = ?";
+                cursor = db.rawQuery(query, new String[]{pack.PackName});
+                Log.d("AppDetails", "PackName before Retrieve: " + pack.PackName);
+                if ((cursor != null) && cursor.moveToFirst()) {
+                    try {
 
-            if (cursor.moveToFirst()) {
-                try {
-                    if(cursor.isNull(0))
-                    fields[i].set(Constant.Pack,fields[i].get(pack));
-                    else if (types[i] == String.class) {
-                        fields[i].set(Constant.Pack, cursor.getString(0));
-                    } else if (types[i] == int.class || types[i] == Integer.class) {
-                        fields[i].set(Constant.Pack, cursor.getInt(0));
-                    } else if (types[i] == boolean.class || types[i] == Boolean.class) {
-                        fields[i].set(Constant.Pack, cursor.getInt(0) == 1);
+                        if (cursor.isNull(0) || cursor.getInt(0) == 0) {
+                            fields[i].set(pack, fields[i].get(Pack));
+                        } else if (types[i] == String.class) {
+                            fields[i].set(pack, cursor.getString(0));
+                        } else if (types[i] == int.class || types[i] == Integer.class) {
+                            fields[i].set(pack, cursor.getInt(0));
+                        } else if (types[i] == boolean.class || types[i] == Boolean.class) {
+                            fields[i].set(pack, cursor.getInt(0) == 1);
+                        }
+
+                    } catch (IllegalAccessException e) {
+                        System.out.println("AAAAAAAAAAAAA" + e);
+                        Remake();
+                    } finally {
+                        if (cursor != null && !cursor.isClosed()) {
+                            cursor.close();
+                        }
                     }
-                } catch (IllegalAccessException e) {
-                    System.out.println("AAAAAAAAAAAAA" + e);
-                    Remake();
-                }
-                finally {
-                    cursor.close();
-                }
                 }
             }
-
         }
+    }
     }
 
 
